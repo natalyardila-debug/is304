@@ -171,16 +171,209 @@ public:
         for(unsigned int i = 0; i < sz/2; i++)
             swap(i, sz-1-i);
     }
+
+    // =============================
+    // EXERCISE 2.14
+    void rotate_left(unsigned int k) {
+
+    if(sz == 0) return;
+
+    k = k % sz;
+
+    if(k == 0) return;
+
+    int* temp = new int[sz];
+
+    for(unsigned int i = 0; i < sz; i++) {
+        temp[i] = storage[(i + k) % sz];
+    }
+
+    for(unsigned int i = 0; i < sz; i++) {
+        storage[i] = temp[i];
+    }
+
+    delete[] temp;
+}
+
+// =============================
+    // EXERCISE 2.15
+    void rotate_right(unsigned int k) {
+
+    if(sz == 0) return;
+
+    k = k % sz;
+
+    if(k == 0) return;
+
+    rotate_left(sz - k);
+}
+ // =============================
+    // EXERCISE 2.16
+    void sort() {
+
+    for(unsigned int i = 0; i < sz - 1; i++) {
+
+        for(unsigned int j = 0; j < sz - i - 1; j++) {
+
+            if(storage[j] > storage[j+1]) {
+
+                int temp = storage[j];
+                storage[j] = storage[j+1];
+                storage[j+1] = temp;
+
+            }
+
+        }
+
+    }
+
+}
+
+// =============================
+    // EXERCISE 2.17
+    void append(const Vector& other) {
+
+    for(unsigned int i = 0; i < other.size(); i++) {
+
+        push_back(other.storage[i]);
+
+    }
+
+}
+
+// =============================
+    // EXERCISE 2.18
+    Vector slice(unsigned int from, unsigned int to) const {
+
+    assert(from <= to && to <= sz);
+
+    Vector result;
+
+    for(unsigned int i = from; i < to; i++) {
+
+        result.push_back(storage[i]);
+
+    }
+
+    return result;
+
+}
+
+// =============================
+    // EXERCISE 2.19
+
+Vector& operator=(const Vector& other) {
+
+    if (this == &other) {
+        return *this;
+    }
+
+    delete[] storage;
+
+    capacity = other.capacity;
+    sz = other.sz;
+
+    storage = new int[capacity];
+
+    for(unsigned int i = 0; i < sz; i++) {
+        storage[i] = other.storage[i];
+    }
+
+    return *this;
+}
+
+// =============================
+    // EXERCISE 3.1
+template <typename Predicate>
+bool any(Predicate p) const {
+
+    for(unsigned int i = 0; i < sz; i++) {
+        if(p(storage[i])) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// =============================
+    // EXERCISE 3.2
+template <typename Predicate>
+bool all(Predicate p) const {
+
+    for(unsigned int i = 0; i < sz; i++) {
+        if(!p(storage[i])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// =============================
+    // EXERCISE 3.3
+    template <typename Predicate>
+    bool none(Predicate p) const {
+
+    return !any(p);
+
+}
 };
 int main() {
 
     Vector<int> v;
+    Vector a;
+    Vector b;
+
+      b = a;
 
     v.push_back(10);
     v.push_back(20);
     v.push_back(30);
     v.push_back(20);
     v.push_back(20);
+    v.push_back(1);
+    v.push_back(2);
+    v.push_back(3);
+    v.push_back(4);
+    v.push_back(5);
+v.push_back(3);
+v.push_back(7);
+v.push_back(4);
+v.push_back(1);
+v.push_back(2);
+v.push_back(8);
+v.push_back(4);
+
+bool allEven = v.all([](int x){ return x % 2 == 0; });
+    
+
+a.push_back(1);
+a.push_back(2);
+a.push_back(3);
+
+
+
+b = a;
+
+for(unsigned int i = 0; i < b.size(); i++) {
+    cout << b[i] << " ";
+}
+
+cout << endl;
+    v.rotate_left(2);
+
+for(int i=0;i<v.size();i++)
+    cout<<v[i]<<" ";
+
+cout<<endl;
+
+v.rotate_right(2);
+
+for(int i=0;i<v.size();i++)
+    cout<<v[i]<<" ";
+
+cout<<endl;
 
     v.remove(20);
     v.replace(30, 99);
@@ -203,6 +396,10 @@ int main() {
     words.push_back("brown");
     words.push_back("fox");
     words.push_back("jumps");
+
+    
+
+bool hasEven = v.any([](int x){ return x % 2 == 0; });
 
     for(unsigned int i = 0; i < words.size(); i++)
         cout << words[i] << " ";
